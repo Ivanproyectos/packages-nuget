@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <OutputType>Library</OutputType>
+    <IsPackable>true</IsPackable>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Nullable>enable</Nullable>
+    <Title>Validation Interceptor for ASP.NET Core</Title>
+    <Description>Middleware for automatic request validation in ASP.NET Core</Description>
+    <Authors>Ivan Perez</Authors>
+    <Version>1.0.0</Version>
+    <!-- INFORMACIÓN DEL REPOSITORIO -->
+    <RepositoryUrl>https://github.com/Ivanproyectos/packages-nuget.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <!-- INFORMACIÓN DEL PAQUETE -->
+    <Authors>Ivan Perez</Authors>
+    <Copyright>Copyright © 2024 Ivan Perez</Copyright>
+    <PackageTags>aspnetcore;middleware;validation;fluentvalidation;interceptor</PackageTags>
+    <PackageReleaseNotes>Initial release: Automatic FluentValidation interceptor for ASP.NET Core</PackageReleaseNotes>
+    <PackageProjectUrl>https://github.com/Ivanproyectos/packages-nuget.git</PackageProjectUrl>
+    <!-- LICENCIA -->
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+    <!--<None Include="LICENSE.txt" Pack="true" PackagePath="\" /> -->
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="12.0.0" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+  </ItemGroup>
+</Project>
