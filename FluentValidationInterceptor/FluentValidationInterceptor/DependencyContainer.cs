@@ -5,9 +5,23 @@ namespace FluentValidationInterceptor
 {
     public static class DependencyContainer
     {
+        [Obsolete("Use AddRequestValidation instead. This method will be removed in v2.0.0")]
         public static IServiceCollection AddFluentValidationInterceptor(
             this IServiceCollection services
         )
+        {
+            return services.AddRequestValidation();
+        }
+
+        [Obsolete("Use UseRequestValidation instead. This method will be removed in v2.0.0")]
+        public static IApplicationBuilder UseFluentValidationInterceptor(
+            this IApplicationBuilder builder
+        )
+        {
+            return builder.UseRequestValidation();
+        }
+
+        public static IServiceCollection AddRequestValidation(this IServiceCollection services)
         {
             var assemblies = AppDomain
                 .CurrentDomain.GetAssemblies()
@@ -38,9 +52,7 @@ namespace FluentValidationInterceptor
             return services;
         }
 
-        public static IApplicationBuilder UseFluentValidationInterceptor(
-            this IApplicationBuilder builder
-        )
+        public static IApplicationBuilder UseRequestValidation(this IApplicationBuilder builder)
         {
             return builder.UseMiddleware<ValidationMiddleware>();
         }

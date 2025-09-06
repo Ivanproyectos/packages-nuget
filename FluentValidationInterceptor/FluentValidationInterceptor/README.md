@@ -32,14 +32,14 @@ Microsoft.AspNetCore.Mvc.Core
 
 1. Configure Services (Program.cs)
 
-```bash
+```csharp
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container
 builder.Services.AddControllers();
 
-// Register FluentValidationInterceptor (automatically finds all validators)
-builder.Services.AddFluentValidationInterceptor();
+// Register RequestValidation (automatically finds all validators)
+builder.Services.AddRequestValidation();
 
 var app = builder.Build();
 
@@ -47,13 +47,13 @@ var app = builder.Build();
 
 2. Configure Middleware (Program.cs)
 
-```bash
+```csharp
 
-// Configure the HTTP request pipeline
+// Configure the HTTP request pipeline ! important
 app.UseRouting();
 
-// Use FluentValidationInterceptor middleware
-app.UseFluentValidationInterceptor();
+// Use RequestValidation middleware
+app.UseRequestValidation();
 
 app.UseAuthorization();
 app.MapControllers();
@@ -61,11 +61,11 @@ app.Run();
 
 ```
 
-#Usage Example
+# Usage Example
 
 1. Create a DTO
 
-```bash
+```csharp
 
 public class CreateUserDto
 {
@@ -77,7 +77,7 @@ public class CreateUserDto
 
 2. Create a Validator
 
-```bash
+```csharp
 public class CreateUserValidator : AbstractValidator<CreateUserDto>
 {
     public CreateUserValidator()
@@ -99,7 +99,7 @@ public class CreateUserValidator : AbstractValidator<CreateUserDto>
 
 3. Create a Controller
 
-```bash
+```csharp
 
 [ApiController]
 [Route("api/[controller]")]
@@ -118,7 +118,7 @@ public class UsersController : ControllerBase
 
 When validation fails, the middleware returns a structured JSON response:
 
-```bash
+```json
 {
   "title": "Validation errors occurred",
   "status": 400,
@@ -126,16 +126,9 @@ When validation fails, the middleware returns a structured JSON response:
   "instance": "/api/users",
   "type": "https://tools.ietf.org/html/rfc7231#section-6.5.1",
   "errors": {
-    "Name": [
-      "Name is required."
-    ],
-    "Age": [
-      "Age must be greater than 0.",
-      "Age must be between 18 and 99."
-    ],
-    "Email": [
-      "A valid email address is required."
-    ]
+    "Name": ["Name is required."],
+    "Age": ["Age must be greater than 0.", "Age must be between 18 and 99."],
+    "Email": ["A valid email address is required."]
   }
 }
 ```

@@ -9,7 +9,7 @@
     <Title>Validation Interceptor for ASP.NET Core</Title>
     <Description>Middleware for automatic request validation in ASP.NET Core</Description>
     <Authors>Ivan Perez</Authors>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <!-- INFORMACIÓN DEL REPOSITORIO -->
     <RepositoryUrl>https://github.com/Ivanproyectos/packages-nuget.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -17,11 +17,17 @@
     <Authors>Ivan Perez</Authors>
     <Copyright>Copyright © 2024 Ivan Perez</Copyright>
     <PackageTags>aspnetcore;middleware;validation;fluentvalidation;interceptor</PackageTags>
-    <PackageReleaseNotes>Initial release: Automatic FluentValidation interceptor for ASP.NET Core</PackageReleaseNotes>
     <PackageProjectUrl>https://github.com/Ivanproyectos/packages-nuget.git</PackageProjectUrl>
     <!-- LICENCIA -->
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+
+	  <PackageReleaseNotes>
+		  - Changed method names from AddFluentValidationInterceptor to AddRequestValidation
+		  - Changed method names from UseFluentValidationInterceptor to UseRequestValidation
+		  - Backward compatible with previous version
+		  - Improved method naming for better readability
+	  </PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
     <None Include="README.md" Pack="true" PackagePath="\" />
