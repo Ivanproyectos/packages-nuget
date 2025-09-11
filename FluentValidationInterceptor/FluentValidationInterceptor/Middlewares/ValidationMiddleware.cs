@@ -106,7 +106,7 @@ namespace FluentValidationInterceptor.Middlewares
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error en el middleware de validación");
+                _logger.LogError(ex, "Error validating request");
                 context.Request.Body.Position = originalBodyPosition;
                 await _next(context);
             }

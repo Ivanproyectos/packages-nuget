@@ -7,7 +7,7 @@ A NuGet package for automating field validation in ASP.NET Core API or MVC appli
 - **Automatic validation** of models and DTOs configured with **FluentValidation**
 - Eliminates repetitive validation code in each endpoint method
 - **Automatic error responses** in JSON format when validation fails
-- Easy configuration with single `UseFluentValidationInterceptor` and `AddFluentValidationInterceptor` methods
+- Easy configuration with single `AddRequestValidation` and `UseRequestValidation` methods
 - Compatible with **ASP.NET Core Web API** and **MVC**
 
 ## Installation
@@ -20,22 +20,18 @@ dotnet add package FluentValidationInterceptor
 
 ## The package will automatically install these required dependencies:
 
-FluentValidation
-
-FluentValidation.DependencyInjectionExtensions
-
-Microsoft.AspNetCore.Http
-
-Microsoft.AspNetCore.Mvc.Core
+- FluentValidation
+- FluentValidation.DependencyInjectionExtensions
+- Microsoft.AspNetCore.Http
+- Microsoft.AspNetCore.Mvc.Core
 
 # Quick Start
 
-1. Configure Services (Program.cs)
+### 1. Configure Services (Program.cs)
 
 ```csharp
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container
 builder.Services.AddControllers();
 
 // Register RequestValidation (automatically finds all validators)
@@ -45,7 +41,7 @@ var app = builder.Build();
 
 ```
 
-2. Configure Middleware (Program.cs)
+### 2. Configure Middleware (Program.cs)
 
 ```csharp
 
@@ -63,7 +59,7 @@ app.Run();
 
 # Usage Example
 
-1. Create a DTO
+### 1. Create a DTO
 
 ```csharp
 
@@ -75,7 +71,14 @@ public class CreateUserDto
 }
 ```
 
-2. Create a Validator
+### 2. Create a Validator
+
+This package extends **FluentValidation**. To learn how to create validators, check the official documentation:
+
+- 📚 [FluentValidation Official Documentation](https://docs.fluentvalidation.net/en/latest/index.html)
+- 🎯 [Getting Started Guide](https://docs.fluentvalidation.net/en/latest/start.html)
+- 🛠️ [Custom Validators](https://docs.fluentvalidation.net/en/latest/custom-validators.html)
+
 
 ```csharp
 public class CreateUserValidator : AbstractValidator<CreateUserDto>
@@ -97,7 +100,7 @@ public class CreateUserValidator : AbstractValidator<CreateUserDto>
 }
 ```
 
-3. Create a Controller
+### 3. Create a Controller
 
 ```csharp
 

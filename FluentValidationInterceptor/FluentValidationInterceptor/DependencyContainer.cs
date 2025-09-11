@@ -44,10 +44,7 @@ namespace FluentValidationInterceptor
                 {
                     services.AddValidatorsFromAssembly(assembly);
                 }
-                catch
-                {
-                    // Ignora assemblies que no tienen validadores
-                }
+                catch { }
             }
             return services;
         }
