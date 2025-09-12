@@ -1,0 +1,8 @@
+﻿namespace ExcelFluently.Models
+{
+    internal class ColumnConfig<T>
+    {
+        public string Name { get; set; }
+        public Func<T, object> GetValue { get; set; }
+    }
+}
