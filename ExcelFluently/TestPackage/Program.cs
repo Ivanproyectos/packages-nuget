@@ -1,7 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using ExcelFluently.Extensions;
 
-new Excel().ExportToCustomColumns();
+new Excel().ExporToExcel();
 Console.WriteLine("Hello, World!");
 
 public class Excel
@@ -47,7 +47,17 @@ public class Excel
 
     public void ExporToExcel()
     {
-        products.ToExcel().ToFile("C:\\Users\\ISP2\\Desktop\\products.xlsx");
+        products
+            .ToExcel()
+            .WithTableStyle(configure =>
+            {
+                configure.Theme = ClosedXML.Excel.XLTableTheme.TableStyleMedium9;
+                configure.ShowRowStripes = true;
+                configure.HeaderFontColor = ClosedXML.Excel.XLColor.White;
+                configure.Title = "Lista de Productos";
+                configure.SheetName = "Productos";
+            })
+            .ToFile("C:\\Users\\JACQUELINE CRUZ\\Desktop\\products.xlsx");
     }
 
     public void ExportToCustomColumns()

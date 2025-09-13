@@ -2,31 +2,21 @@
 using System.Reflection;
 using ClosedXML.Excel;
 using ExcelFluently.Models;
+using ExcelFluently.Settings;
 
-namespace ExcelFluently.Core
+namespace ExcelFluently.Services
 {
     public class ExcelExporterService<T>
     {
         private IEnumerable<T> _data;
-        private string _sheetName = "Sheet1";
         private List<ColumnConfig<T>> _columns = new();
         private bool _useAutoColumns = true;
+        private int _titleRowHeight = 3;
+        private TableStyleSettings _tableSettings = new();
 
         public ExcelExporterService(IEnumerable<T> data)
         {
             _data = data;
-        }
-
-        public ExcelExporterService<T> WithData(IEnumerable<T> data)
-        {
-            _data = data;
-            return this;
-        }
-
-        public ExcelExporterService<T> WithSheetName(string sheetName)
-        {
-            _sheetName = sheetName;
-            return this;
         }
 
         public ExcelExporterService<T> WithColumn(
@@ -58,7 +48,7 @@ namespace ExcelFluently.Core
         {
             using (var workbook = new XLWorkbook())
             {
-                var worksheet = workbook.Worksheets.Add(_sheetName);
+                var worksheet = workbook.Worksheets.Add(_tableSettings.SheetName);
                 if (_useAutoColumns)
                 {
                     AddAutoColumns(worksheet);
@@ -67,6 +57,7 @@ namespace ExcelFluently.Core
                 {
                     AddCustomColumns(worksheet);
                 }
+                ApplyTableStyle(worksheet);
 
                 using var stream = new MemoryStream();
                 workbook.SaveAs(stream);
@@ -90,7 +81,7 @@ namespace ExcelFluently.Core
                 worksheet.Cell(1, column++).Value = property.Name;
             }
 
-            int row = 2;
+            int row = GetStartRow();
             int columnIndex = 1;
             foreach (var item in _data)
             {
@@ -111,7 +102,7 @@ namespace ExcelFluently.Core
             {
                 worksheet.Cell(1, columnIndex++).Value = column.Name;
             }
-            int row = 2;
+            int row = GetStartRow();
             foreach (var item in _data)
             {
                 columnIndex = 1;
@@ -123,6 +114,74 @@ namespace ExcelFluently.Core
                 columnIndex = 1;
             }
             worksheet.Columns().AdjustToContents();
+        }
+
+        private void ApplyTableStyle(IXLWorksheet worksheet)
+        {
+            if (!string.IsNullOrEmpty(_tableSettings.Title))
+            {
+                ApplyTitle(worksheet);
+            }
+
+            if (_tableSettings.Theme == XLTableTheme.None)
+                return;
+
+            var lastRow = worksheet?.LastRowUsed()?.RowNumber();
+            var lastColumn = worksheet?.LastColumnUsed()?.ColumnNumber();
+            int firstRow = GetStartRow();
+
+            if (lastRow > 1 && lastColumn > 0)
+            {
+                var range = worksheet?.Range(firstRow, 1, lastRow ?? 0, lastColumn ?? 0);
+                var table = range?.CreateTable();
+
+                if (table == null)
+                    return;
+
+                table.Theme = _tableSettings.Theme;
+                table.ShowRowStripes = _tableSettings.ShowRowStripes;
+                table.ShowColumnStripes = _tableSettings.ShowColumnStripes;
+                table.ShowTotalsRow = _tableSettings.ShowTotalsRow;
+                table.HeadersRow().Style.Font.FontColor = _tableSettings.HeaderFontColor;
+            }
+        }
+
+        private void ApplyTitle(IXLWorksheet worksheet)
+        {
+            var lastColumn = GetDataColumnCount();
+
+            var titleRange = worksheet.Range(1, 1, _titleRowHeight, lastColumn);
+            titleRange.Merge();
+            titleRange.Value = _tableSettings.Title;
+
+            titleRange.Style.Fill.BackgroundColor = XLColor.White;
+            titleRange.Style.Font.FontColor = XLColor.Black;
+            titleRange.Style.Font.FontSize = 16;
+            titleRange.Style.Font.Bold = true;
+
+            titleRange.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+            titleRange.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
+
+            // Fila de separación después del título
+            worksheet.Row(_titleRowHeight + 1).Height = 5;
+        }
+
+        private int GetDataColumnCount()
+        {
+            if (_useAutoColumns)
+                return typeof(T).GetProperties().Length;
+            else
+                return _columns.Count;
+        }
+
+        private int GetStartRow()
+        {
+            return string.IsNullOrEmpty(_tableSettings.Title) ? 1 : _titleRowHeight + 2;
+        }
+
+        internal void ApplyTableStyle(TableStyleSettings settings)
+        {
+            _tableSettings = settings;
         }
     }
 }
