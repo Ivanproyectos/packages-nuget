@@ -1,7 +1,8 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using ExcelFluently.Extensions;
 
-new Excel().ExporToExcel();
+//new Excel().ExporToExcel();
+var products = new Excel().GetProducts();
 Console.WriteLine("Hello, World!");
 
 public class Excel
@@ -68,6 +69,21 @@ public class Excel
             .WithColumn(x => x.Nombre + " " + x.Email, "Nombre")
             .WithColumn(x => x.FechaCreacion, "Fecha")
             .ToFile("C:\\Users\\ISP2\\Desktop\\products.xlsx");
+    }
+
+    public List<Producto> GetProducts()
+    {
+        using var steam = File.OpenRead("C:\\Users\\USUARIO\\Desktop\\\\carga producto.xlsx");
+        var products = steam
+            .ImportExcel<Producto>(configure =>
+            {
+                configure.SheetName = "Productos";
+            })
+            .MapColumn("Nombre", x => x.Nombre)
+            .MapColumn("Categoria", x => x.Email)
+            .ToList();
+
+        return products;
     }
 };
 

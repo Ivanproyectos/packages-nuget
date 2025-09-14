@@ -1,7 +1,24 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\JACQUELINE CRUZ\\Desktop\\proyects\\packages-nuget\\ExcelFluently\\",
-  "Documents": [],
+  "WorkspaceRootPath": "C:\\Users\\USUARIO\\Documents\\GitHub\\packages-nuget\\ExcelFluently\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{C05D471F-B07A-4BDD-9877-B7D9C464B5CB}|ExcelFluently\\ExcelFluently.csproj|c:\\users\\usuario\\documents\\github\\packages-nuget\\excelfluently\\excelfluently\\services\\excelimporterservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C05D471F-B07A-4BDD-9877-B7D9C464B5CB}|ExcelFluently\\ExcelFluently.csproj|solutionrelative:excelfluently\\services\\excelimporterservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C05D471F-B07A-4BDD-9877-B7D9C464B5CB}|ExcelFluently\\ExcelFluently.csproj|c:\\users\\usuario\\documents\\github\\packages-nuget\\excelfluently\\excelfluently\\services\\excelexporterservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C05D471F-B07A-4BDD-9877-B7D9C464B5CB}|ExcelFluently\\ExcelFluently.csproj|solutionrelative:excelfluently\\services\\excelexporterservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C05D471F-B07A-4BDD-9877-B7D9C464B5CB}|ExcelFluently\\ExcelFluently.csproj|c:\\users\\usuario\\documents\\github\\packages-nuget\\excelfluently\\excelfluently\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C05D471F-B07A-4BDD-9877-B7D9C464B5CB}|ExcelFluently\\ExcelFluently.csproj|solutionrelative:excelfluently\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C05D471F-B07A-4BDD-9877-B7D9C464B5CB}|ExcelFluently\\ExcelFluently.csproj|c:\\users\\usuario\\documents\\github\\packages-nuget\\excelfluently\\excelfluently\\extensions\\excelimporterextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C05D471F-B07A-4BDD-9877-B7D9C464B5CB}|ExcelFluently\\ExcelFluently.csproj|solutionrelative:excelfluently\\extensions\\excelimporterextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -9,11 +26,59 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": -1,
+          "SelectedChildIndex": 0,
           "Children": [
             {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ExcelImporterService.cs",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\Documents\\GitHub\\packages-nuget\\ExcelFluently\\ExcelFluently\\Services\\ExcelImporterService.cs",
+              "RelativeDocumentMoniker": "ExcelFluently\\Services\\ExcelImporterService.cs",
+              "ToolTip": "C:\\Users\\USUARIO\\Documents\\GitHub\\packages-nuget\\ExcelFluently\\ExcelFluently\\Services\\ExcelImporterService.cs",
+              "RelativeToolTip": "ExcelFluently\\Services\\ExcelImporterService.cs",
+              "ViewState": "AgIAADUAAAAAAAAAAAAzwGcAAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-14T04:30:52.639Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ExcelExporterService.cs",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\Documents\\GitHub\\packages-nuget\\ExcelFluently\\ExcelFluently\\Services\\ExcelExporterService.cs",
+              "RelativeDocumentMoniker": "ExcelFluently\\Services\\ExcelExporterService.cs",
+              "ToolTip": "C:\\Users\\USUARIO\\Documents\\GitHub\\packages-nuget\\ExcelFluently\\ExcelFluently\\Services\\ExcelExporterService.cs",
+              "RelativeToolTip": "ExcelFluently\\Services\\ExcelExporterService.cs",
+              "ViewState": "AgIAAFgAAAAAAAAAAAAcwF0AAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-14T04:31:04.084Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\Documents\\GitHub\\packages-nuget\\ExcelFluently\\ExcelFluently\\Program.cs",
+              "RelativeDocumentMoniker": "ExcelFluently\\Program.cs",
+              "ToolTip": "C:\\Users\\USUARIO\\Documents\\GitHub\\packages-nuget\\ExcelFluently\\ExcelFluently\\Program.cs",
+              "RelativeToolTip": "ExcelFluently\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-14T04:30:57.883Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ExcelImporterExtensions.cs",
+              "DocumentMoniker": "C:\\Users\\USUARIO\\Documents\\GitHub\\packages-nuget\\ExcelFluently\\ExcelFluently\\Extensions\\ExcelImporterExtensions.cs",
+              "RelativeDocumentMoniker": "ExcelFluently\\Extensions\\ExcelImporterExtensions.cs",
+              "ToolTip": "C:\\Users\\USUARIO\\Documents\\GitHub\\packages-nuget\\ExcelFluently\\ExcelFluently\\Extensions\\ExcelImporterExtensions.cs",
+              "RelativeToolTip": "ExcelFluently\\Extensions\\ExcelImporterExtensions.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-14T04:30:47.648Z",
+              "EditorCaption": ""
             }
           ]
         }
