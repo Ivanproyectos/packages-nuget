@@ -1,96 +1,132 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using ExcelFluently.Extensions;
 
-//new Excel().ExporToExcel();
-var products = new Excel().GetProducts();
-Console.WriteLine("Hello, World!");
+new Excel().ExportToExcelWithCustomColumns();
+Console.WriteLine("Excel file created successfully.");
+
+//var users = new Excel().ExportToExcelWithCustomStyle();
+//Console.WriteLine($"total users: {users.Count}");
 
 public class Excel
 {
-    private List<Producto> products = new List<Producto>()
+    private List<User> users = new List<User>()
     {
-        new Producto()
+        new User()
         {
             Id = 1,
-            Nombre = "A",
+            Name = "A",
             Email = "a@a.com",
-            FechaCreacion = DateTime.Now,
+            DateOfBirth = DateTime.Now,
         },
-        new Producto()
+        new User()
         {
             Id = 2,
-            Nombre = "B",
+            Name = "B",
             Email = "b@b.com",
-            FechaCreacion = DateTime.Now,
+            DateOfBirth = DateTime.Now,
         },
-        new Producto()
+        new User()
         {
             Id = 3,
-            Nombre = "C",
+            Name = "C",
             Email = "c@c.com",
-            FechaCreacion = DateTime.Now,
+            DateOfBirth = DateTime.Now,
         },
-        new Producto()
+        new User()
         {
             Id = 4,
-            Nombre = "D",
+            Name = "D",
             Email = "d@d.com",
-            FechaCreacion = DateTime.Now,
+            DateOfBirth = DateTime.Now,
         },
-        new Producto()
+        new User()
         {
             Id = 5,
-            Nombre = "E",
+            Name = "E",
             Email = "e@e.com",
-            FechaCreacion = DateTime.Now,
+            DateOfBirth = DateTime.Now,
         },
     };
 
-    public void ExporToExcel()
+    // Export users to an Excel file with a custom table style
+    public void ExportToExcelWithCustomStyle()
     {
-        products
+        users
             .ToExcel()
             .WithTableStyle(configure =>
             {
                 configure.Theme = ClosedXML.Excel.XLTableTheme.TableStyleMedium9;
                 configure.ShowRowStripes = true;
-                configure.HeaderFontColor = ClosedXML.Excel.XLColor.White;
-                configure.Title = "Lista de Productos";
-                configure.SheetName = "Productos";
+                configure.HeaderFontColor = ClosedXML.Excel.XLColor.Black;
+                //configure.ShowTotalsRow = true;
+                configure.Title = "Report of Users";
+                configure.SheetName = "Users";
             })
-            .ToFile("C:\\Users\\JACQUELINE CRUZ\\Desktop\\products.xlsx");
+            .ToFile("C:\\Users\\ISP2\\Desktop\\users.xlsx");
     }
 
-    public void ExportToCustomColumns()
+    public void ExportToExcelWithCustomColumns()
     {
-        products
+        users
             .ToExcel()
+            //.WithTableStyle(configure =>
+            //{
+            //    configure.Theme = ClosedXML.Excel.XLTableTheme.TableStyleMedium9;
+            //    configure.ShowRowStripes = true;
+            //    configure.HeaderFontColor = ClosedXML.Excel.XLColor.Black;
+            //    configure.Title = "Report of Users";
+            //    configure.SheetName = "Users";
+            //})
             .WithColumn(x => x.Id, "Codigo")
-            .WithColumn(x => x.Nombre + " " + x.Email, "Nombre")
-            .WithColumn(x => x.FechaCreacion, "Fecha")
-            .ToFile("C:\\Users\\ISP2\\Desktop\\products.xlsx");
+            .WithColumn(x => x.Name + " " + x.Email, "Name")
+            .WithColumn(x => x.DateOfBirth, "Fecha", "yyyy/MM/dd")
+            .ToFile("C:\\Users\\ISP2\\Desktop\\users.xlsx");
     }
 
-    public List<Producto> GetProducts()
+    public List<User> MapusersFromExcelByNameColumn()
     {
-        using var steam = File.OpenRead("C:\\Users\\USUARIO\\Desktop\\\\carga producto.xlsx");
-        var products = steam
-            .ImportExcel<Producto>(configure =>
+        using var steam = File.OpenRead("C:\\Users\\ISP2\\Desktop\\import users.xlsx");
+        var users = steam
+            .ImportExcel<User>(configure =>
             {
-                configure.SheetName = "Productos";
+                configure.SheetName = "Users";
+                // configure.DateFormat = "M/d/yyyy";
             })
-            .MapColumn("Nombre", x => x.Nombre)
-            .MapColumn("Categoria", x => x.Email)
+            .MapColumn(x => x.Name)
+            .MapColumn(x => x.Email)
+            .MapColumn(x => x.DateOfBirth, "Date Of Birth")
+            .MapColumn(x => x.Age)
+            .MapColumn(x => x.Salary)
             .ToList();
 
-        return products;
+        return users;
+    }
+
+    public List<User> MapusersFromExcelByIndexColumn()
+    {
+        using var steam = File.OpenRead("C:\\Users\\ISP2\\Desktop\\import users.xlsx");
+        var users = steam
+            .ImportExcel<User>(configure =>
+            {
+                configure.SheetName = "Users";
+            })
+            .MapColumn(x => x.Name, 1)
+            .MapColumn(x => x.Email, 2)
+            .MapColumn(x => x.DateOfBirth, 3)
+            .MapColumn(x => x.Age, 4)
+            .MapColumn(x => x.Salary, 5)
+            .ToList();
+
+        return users;
     }
 };
 
-public class Producto
+public class User
 {
     public int Id { get; set; }
-    public string Nombre { get; set; }
+    public string Name { get; set; }
     public string Email { get; set; }
-    public DateTime FechaCreacion { get; set; }
+    public DateTime DateOfBirth { get; set; }
+    public int Age { get; set; }
+    public decimal Salary { get; set; }
 }

@@ -1,0 +1,6 @@
+@LoadExcel.API.Test_HostAddress = http://localhost:5098
+
+GET {{LoadExcel.API.Test_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

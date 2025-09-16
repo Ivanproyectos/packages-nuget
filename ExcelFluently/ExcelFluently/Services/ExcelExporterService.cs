@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using System.Reflection;
 using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Spreadsheet;
 using ExcelFluently.Models;
 using ExcelFluently.Settings;
 
@@ -21,7 +22,8 @@ namespace ExcelFluently.Services
 
         public ExcelExporterService<T> WithColumn(
             Expression<Func<T, object>> expression,
-            string? columnName = null
+            string? columnName = null,
+            string? format = null
         )
         {
             _useAutoColumns = false;
@@ -39,6 +41,7 @@ namespace ExcelFluently.Services
                 {
                     Name = columnName ?? propertyName ?? string.Empty,
                     GetValue = compileExpression,
+                    Format = format,
                 }
             );
             return this;
@@ -48,7 +51,7 @@ namespace ExcelFluently.Services
         {
             using (var workbook = new XLWorkbook())
             {
-                var worksheet = workbook.Worksheets.Add(_tableSettings.SheetName);
+                var worksheet = workbook.Worksheets.Add(_tableSettings.SheetName ?? "Sheet1");
                 if (_useAutoColumns)
                 {
                     AddAutoColumns(worksheet);
@@ -75,13 +78,15 @@ namespace ExcelFluently.Services
             PropertyInfo[] properties = typeof(T).GetProperties(
                 BindingFlags.Public | BindingFlags.Instance
             );
+
             int column = 1;
+            int rowIndex = GetStartRow();
             foreach (var property in properties)
             {
-                worksheet.Cell(1, column++).Value = property.Name;
+                worksheet.Cell(rowIndex, column++).Value = property.Name;
             }
 
-            int row = GetStartRow();
+            int row = rowIndex + 1;
             int columnIndex = 1;
             foreach (var item in _data)
             {
@@ -98,17 +103,27 @@ namespace ExcelFluently.Services
         private void AddCustomColumns(IXLWorksheet worksheet)
         {
             int columnIndex = 1;
+            int rowIndex = GetStartRow();
             foreach (var column in _columns)
             {
-                worksheet.Cell(1, columnIndex++).Value = column.Name;
+                worksheet.Cell(rowIndex, columnIndex++).Value = column.Name;
             }
-            int row = GetStartRow();
+            int row = rowIndex + 1;
+
             foreach (var item in _data)
             {
                 columnIndex = 1;
                 foreach (var column in _columns)
                 {
-                    worksheet.Cell(row, columnIndex++).Value = column.GetValue(item).ToString();
+                    var type = item?.GetType();
+                    var value = column.GetValue(item);
+                    var cell = worksheet.Cell(row, columnIndex++);
+                    if (column.Format != null && value is DateTime datetime)
+                    {
+                        cell.Value = datetime.ToString(column.Format);
+                        continue;
+                    }
+                    cell.Value = value?.ToString();
                 }
                 row++;
                 columnIndex = 1;

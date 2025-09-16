@@ -4,10 +4,27 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Title>Excel Fluent</Title>
+    <Title>Excel Fluent - Easy Excel Export/Import</Title>
     <Version>1.0.0</Version>
+    <!-- INFORMACIÓN DEL REPOSITORIO -->
+    <RepositoryUrl>https://github.com/Ivanproyectos/packages-nuget.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <!-- INFORMACIÓN DEL PAQUETE -->
+    <Authors>Ivan Perez</Authors>
+    <Description>Easy-to-use fluent library for Excel export and import operations. Simple data transfer from DTOs/models with intuitive fluent syntax and customizable configurations.</Description>
+    <Copyright>Copyright © 2025 Ivan Perez</Copyright>
+    <PackageTags>excel, export, import, closedxml, fluent, configuration, model, spreadsheet, data</PackageTags>
+    <PackageProjectUrl>https://github.com/Ivanproyectos/packages-nuget.git</PackageProjectUrl>
+    <!-- LICENCIA -->
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageReleaseNotes>First release: Fluent Excel export with configurable styles, import with column mapping, date format handling, and error management.</PackageReleaseNotes>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="ClosedXML" Version="0.105.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
   </ItemGroup>
 </Project>

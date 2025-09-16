@@ -1,6 +1,9 @@
-﻿using System.Linq.Expressions;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Globalization;
+using System.Linq.Expressions;
 using System.Reflection;
 using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Presentation;
 using ExcelFluently.Models;
 using ExcelFluently.Settings;
 
@@ -10,22 +13,19 @@ namespace ExcelFluently.Services
         where T : new()
     {
         private readonly Stream _excelStream;
-        private string _sheetName = "Sheet1";
+        private ImporterSettings _settings = new ImporterSettings();
         private readonly Dictionary<string, PropertyInfo> _columnMappings = new();
         private readonly Dictionary<int, PropertyInfo> _indexMappings = new();
 
         public ExcelImporterService(Stream stream, Action<ImporterSettings> configure = null)
         {
-            var settings = new ImporterSettings();
-            configure(settings);
-            _sheetName = settings.SheetName;
-
+            configure(_settings);
             _excelStream = stream;
         }
 
-        public ExcelImporterService<T> MapColumn(
-            string columnName,
-            Expression<Func<T, object>> propertySelector
+        public ExcelImporterService<T> MapColumn<TProperty>(
+            Expression<Func<T, TProperty>> propertySelector,
+            string columnName = null
         )
         {
             var property = GetPropertyInfo(propertySelector);
@@ -33,13 +33,13 @@ namespace ExcelFluently.Services
             {
                 throw new ArgumentException("Expression must be a property");
             }
-            _columnMappings[columnName] = property;
+            _columnMappings[columnName ?? property.Name] = property;
             return this;
         }
 
-        public ExcelImporterService<T> MapColumn(
-            int columnIndex,
-            Expression<Func<T, object>> propertySelector
+        public ExcelImporterService<T> MapColumn<TProperty>(
+            Expression<Func<T, TProperty>> propertySelector,
+            int columnIndex
         )
         {
             var property = GetPropertyInfo(propertySelector);
@@ -63,7 +63,7 @@ namespace ExcelFluently.Services
 
             using (var workbook = new XLWorkbook(_excelStream))
             {
-                var worksheet = workbook.Worksheet(_sheetName);
+                var worksheet = workbook.Worksheet(_settings.SheetName);
                 var firstRow = worksheet.FirstRowUsed();
 
                 if (firstRow == null)
@@ -158,13 +158,13 @@ namespace ExcelFluently.Services
                 return value.ToString();
 
             if (targetType == typeof(int) || targetType == typeof(int?))
-                return Convert.ToInt32(value);
+                return Convert.ToInt32(value?.ToString()?.Trim());
 
             if (targetType == typeof(decimal) || targetType == typeof(decimal?))
-                return Convert.ToDecimal(value);
+                return Convert.ToDecimal(value?.ToString()?.Trim());
 
             if (targetType == typeof(DateTime) || targetType == typeof(DateTime?))
-                return Convert.ToDateTime(value);
+                return ConvertToDateTime(value);
 
             if (targetType == typeof(bool) || targetType == typeof(bool?))
                 return Convert.ToBoolean(value);
@@ -172,11 +172,29 @@ namespace ExcelFluently.Services
             return Convert.ChangeType(value, targetType);
         }
 
-        private PropertyInfo? GetPropertyInfo(Expression<Func<T, object>> expression)
+        private DateTime ConvertToDateTime(object value)
+        {
+            if (value is DateTime datetime)
+            {
+                return datetime;
+            }
+
+            return DateTime.TryParseExact(
+                value.ToString(),
+                _settings.DateFormat,
+                CultureInfo.InvariantCulture,
+                DateTimeStyles.None,
+                out DateTime parsedDate
+            )
+                ? parsedDate
+                : DateTime.MinValue;
+        }
+
+        private PropertyInfo? GetPropertyInfo<TProperty>(Expression<Func<T, TProperty>> expression)
         {
             var member = expression.Body as MemberExpression;
             if (member == null)
-                throw new ArgumentException("Expresión debe ser una propiedad");
+                throw new ArgumentException("Expression must be a property");
 
             return typeof(T).GetProperty(member.Member.Name);
         }
